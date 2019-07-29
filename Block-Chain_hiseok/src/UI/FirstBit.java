@@ -7,6 +7,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
+
+import DAO.dao;
+
 import java.awt.TextArea;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -35,7 +38,10 @@ import java.awt.event.MouseEvent;
 public class FirstBit extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
-
+	JLabel lblId = new JLabel("ID");
+	JLabel lblPassword = new JLabel("Password");
+	TextField textField = new TextField();
+	TextField textField_1 = new TextField();
 	public FirstBit() {
 		this.setVisible(true);
 		setResizable(false);
@@ -80,20 +86,21 @@ public class FirstBit extends JFrame implements ActionListener {
 		contentPane.add(panel_1);
 		panel_1.setLayout(null);
 
-		TextField textField = new TextField();
+		
 		textField.setBounds(51, 59, 177, 23);
 		panel_1.add(textField);
 
-		TextField textField_1 = new TextField();
+		
 		textField_1.setBounds(51, 122, 177, 23);
+		textField_1.setEchoChar('*');
 		panel_1.add(textField_1);
-
-		JLabel lblId = new JLabel("ID");
+		
+		
 		lblId.setFont(new Font("����", Font.BOLD, 14));
 		lblId.setBounds(51, 39, 32, 15);
 		panel_1.add(lblId);
-
-		JLabel lblPassword = new JLabel("Password");
+		
+		
 		lblPassword.setFont(new Font("����", Font.BOLD, 14));
 		lblPassword.setBounds(51, 99, 87, 15);
 		panel_1.add(lblPassword);
@@ -113,13 +120,26 @@ public class FirstBit extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 
 		if (e.getActionCommand().equals("Log-In")) {
-			this.setVisible(false);
-			new SecondBit();
+			int temp = dao.getInstance().checkID(textField.getText(), textField_1.getText());
+			System.out.println("check / "+temp);
+			if(temp==3) { //다맞을경우 넘어가기
+				this.setVisible(false);
+				new SecondBit(textField.getText());
+			}else if(temp==2) { //ID만  맞을경우
+				lblPassword.setForeground(Color.RED);
+				
+			}else if(temp==1) { //PW만 맞을경우
+				lblId.setForeground(Color.RED);
+		
+			}else if(temp==0){
+				lblId.setForeground(Color.RED);
+				lblPassword.setForeground(Color.RED);
+			}
+			
 		} else if (e.getActionCommand().equals("Sign-In")) {
 			this.setVisible(false);
 			new Sign();
 		}
 
 	}
-
 }

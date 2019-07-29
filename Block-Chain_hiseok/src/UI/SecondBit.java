@@ -19,9 +19,9 @@ import javax.swing.border.EmptyBorder;
 public class SecondBit extends JFrame implements ActionListener{
 	private JPanel contentPane1;
 	
-	ThirdBit tb = new ThirdBit();
-	
-	public SecondBit() {
+	ThirdBit tb=null;
+	public SecondBit(String id) {
+		tb = new ThirdBit(id);
 		setResizable(false);
 		this.setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -56,10 +56,10 @@ public class SecondBit extends JFrame implements ActionListener{
 		JLabel lblLoginSuccess = new JLabel("Welcome~!!");
 		lblLoginSuccess.setFont(new Font("굴림", Font.BOLD, 18));
 		lblLoginSuccess.setForeground(new Color(255, 0, 0));
-		lblLoginSuccess.setBounds(289, 33, 176, 23);
+		lblLoginSuccess.setBounds(320, 33, 176, 23);
 		contentPane1.add(lblLoginSuccess);
 		
-		JLabel lblNewLabel = new JLabel("ID_hiseok");
+		JLabel lblNewLabel = new JLabel("ID : [ "+id+" ]");
 		lblNewLabel.setFont(new Font("굴림", Font.BOLD, 12));
 		lblNewLabel.setBounds(205, 29, 123, 34);
 		contentPane1.add(lblNewLabel);

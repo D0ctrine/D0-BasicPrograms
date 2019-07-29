@@ -18,12 +18,19 @@ import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 import javax.swing.border.EmptyBorder;
 
+import DAO.dao;
+
 public class ThirdBit extends JFrame implements ActionListener {
 	private JPanel contentPane2;
 	private JPanel contentPane3;
 	private JPanel contentPane4;
 	private JPanel contentPane5;
-
+	String id1="";
+	
+	ThirdBit(String id) {
+		this.id1 = id;
+	}
+	
 	public void ThirdBit_1() {
 		setResizable(false);
 		this.setVisible(true);
@@ -56,7 +63,7 @@ public class ThirdBit extends JFrame implements ActionListener {
 		label.setBounds(513, 364, 39, 23);
 		contentPane2.add(label);
 
-		JLabel lblNewLabel = new JLabel("< ID_hiseok 님의 계좌 정보 >");
+		JLabel lblNewLabel = new JLabel("< ID_"+id1+"님의 계좌 정보 >");
 		lblNewLabel.setFont(new Font("굴림", Font.BOLD, 12));
 		lblNewLabel.setBounds(143, 56, 203, 52);
 		contentPane2.add(lblNewLabel);
@@ -71,7 +78,7 @@ public class ThirdBit extends JFrame implements ActionListener {
 		label_1.setBounds(35, 23, 241, 42);
 		panel_1.add(label_1);
 
-		JLabel label_2 = new JLabel("2. 계좌 금액 : [ 15,005,000,000원 ]");
+		JLabel label_2 = new JLabel("2. 계좌 금액 : [ "+dao.getInstance().getMoney(id1)+" ]");
 		label_2.setFont(new Font("굴림", Font.BOLD, 15));
 		label_2.setBounds(35, 86, 296, 42);
 		panel_1.add(label_2);
@@ -122,7 +129,7 @@ public class ThirdBit extends JFrame implements ActionListener {
 		label.setBounds(513, 364, 39, 23);
 		contentPane3.add(label);
 
-		JLabel lblNewLabel = new JLabel("< ID_hiseok 님 출금 >");
+		JLabel lblNewLabel = new JLabel("< ID_"+id1+" 님 출금 >");
 		lblNewLabel.setFont(new Font("굴림", Font.BOLD, 12));
 		lblNewLabel.setBounds(143, 56, 203, 52);
 		contentPane3.add(lblNewLabel);
@@ -262,7 +269,7 @@ public class ThirdBit extends JFrame implements ActionListener {
 			contentPane2.setVisible(false);
 		} else if (e.getActionCommand().equals("뒤로가기")) {
 			this.setVisible(false);
-			SecondBit frame = new SecondBit();
+			SecondBit frame = new SecondBit(id1);
 		} else if (e.getActionCommand().equals("보내기")) {
 			this.setVisible(false);
 		} 

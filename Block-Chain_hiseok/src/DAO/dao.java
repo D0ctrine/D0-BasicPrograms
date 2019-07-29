@@ -33,28 +33,20 @@ public class dao {
 		return conn;
 	}
 	
-	public void insert() {
+	public void insert(String id,String pw,String curmoney) {
 		
 		Connection conn = getConnection();
 		PreparedStatement ppst = null;
 	
 
-		System.out.println("���̵� �Է����ּ���.");
-		String id = in.nextLine();
-		int checknum=0;
-		
-			
-			
 		try {
 			
-		ppst = conn.prepareStatement("insert into customlist values(?,?,?,?)");
-//		ppst.setString(1, membDto.getId());
-//		ppst.setString(2, membDto.getName());
-//		ppst.setString(3, membDto.getAddr());
-//		ppst.setInt(4, membDto.getPoint());
-		
+		ppst = conn.prepareStatement("insert into member values(?,?,?)");
+		ppst.setString(1, id);
+		ppst.setString(2, pw);
+		ppst.setInt(3, Integer.parseInt(curmoney));
+		System.out.println("curmoney : "+curmoney);
 		ppst.executeUpdate();
-		System.out.println("�Է�ó���� �Ϸ�Ǿ����ϴ�.");
 		}catch(Exception e) {
 			System.out.println("SQL Error");
 		}finally {
@@ -65,6 +57,7 @@ public class dao {
 				System.out.println("connection close error");
 			}//end catch
 		}//end finally
+		System.out.println("Sign-in Successed");
 	}//end insert()
 	
 	public void update() {
@@ -99,7 +92,7 @@ public class dao {
 		
 		try {
 		
-		ppst1 = conne.prepareStatement("delete from customlist where id=?");
+		ppst1 = conne.prepareStatement("delete from member where id=?");
 //		ppst1.setString(1,id);
 		int a = ppst1.executeUpdate();
 		}catch(Exception e) {
@@ -114,33 +107,22 @@ public class dao {
 		}//end finally
 	}
 	
-	public void getList() {
+	public int checkID(String id,String pw) {
 		Connection conn = getConnection();
 		PreparedStatement ppst = null;
-		ResultSet rs = null;
+		PreparedStatement ppst1 = null;
+		int checkId;
+		int checkPw;
+		int count=0;
 		try {
-			ppst = conn.prepareStatement("select * from customlist");
-			
-			rs= ppst.executeQuery();
-			int i=0;
-			if(rs.next()) {
-				
-				do {
-//					dto.setId(rs.getString("id"));
-//					dto.setName(rs.getString("name"));
-//					dto.setAddr(rs.getString("addr"));
-//					dto.setPoint(rs.getInt("point"));
-//					memberDTOList.add(dto);
-//					System.out.println("���̵� : "+memberDTOList.get(i).getId());
-//					System.out.println("�̸� : "+memberDTOList.get(i).getName());
-//					System.out.println("�ּ� :"+memberDTOList.get(i).getAddr());
-//					System.out.println("�ܿ� ����Ʈ :"+memberDTOList.get(i).getPoint());
-					
-					i++;
-					
-				}while(rs.next());
-					
-				}//end if
+			ppst = conn.prepareStatement("select id from member where id=?");
+			ppst.setString(1,id);
+			ppst1 = conn.prepareStatement("select pw from member where pw=?");
+			ppst1.setString(1,pw);
+			checkId= ppst.executeUpdate();
+			if(checkId==1)count=count+2;
+			checkPw= ppst1.executeUpdate();
+			if(checkPw==1)count++;
 				}//end try
 				catch(Exception e) {
 					System.out.println("SQL Error");
@@ -148,11 +130,41 @@ public class dao {
 					try {
 						if(ppst != null) ppst.close();
 						if(conn != null) conn.close();
-						if(rs != null) conn.close();
 					}catch(Exception e) {
 						System.out.println("connection close error");
 					}//end catch
 				}//end finally
-		
+		System.out.println(count);
+		return count;
 	}
+	public int getMoney(String id) {
+		Connection conn = getConnection();
+		PreparedStatement ppst = null;
+		ResultSet rs = null;
+	
+		int count=0;
+		try {
+			ppst = conn.prepareStatement("select curmoney from member where id=?");
+			ppst.setString(1,id);
+ 			rs = ppst.executeQuery();
+			if(rs.next()) {
+				
+				count = rs.getInt("CURMONEY");
+			}
+			
+				}//end try
+				catch(Exception e) {
+					System.out.println("SQL Error");
+				}finally {
+					try {
+						if(ppst != null) ppst.close();
+						if(conn != null) conn.close();
+					}catch(Exception e) {
+						System.out.println("connection close error");
+					}//end catch
+				}//end finally
+		System.out.println(count);
+		return count;
+	}
+	
 }

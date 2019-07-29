@@ -6,7 +6,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class WithClient extends Thread { // �젒�냽 �븳 �겢�씪�씠�뼵�듃�옉 �넻�떊�븯湲� �쐞�븳 �겢�옒�뒪
+public class WithClient extends Thread { 
 
 	String id = null;
 
