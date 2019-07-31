@@ -70,17 +70,17 @@ public class SecondBit extends JFrame implements ActionListener{
 		panel_1.setLayout(null);
 		
 		JMenuItem menuItem = new JMenuItem("[ 1. 계좌 조회 ]");
-		menuItem.setBounds(43, 31, 174, 22);
+		menuItem.setBounds(43, 31, 180, 22);
 		panel_1.add(menuItem);
 		menuItem.addActionListener(this);
 		
-		JMenuItem menuItem_1 = new JMenuItem("[ 2. 계좌 출금 ]");
-		menuItem_1.setBounds(43, 90, 174, 22);
+		JMenuItem menuItem_1 = new JMenuItem("[ 2. 계좌 출금/송금 ]   ( 타은행 )");
+		menuItem_1.setBounds(43, 90, 180, 22);
 		panel_1.add(menuItem_1);
 		menuItem_1.addActionListener(this);
 		
 		JMenuItem menuItem_2 = new JMenuItem("[ 3. 계좌 입금/송금 ]");
-		menuItem_2.setBounds(43, 145, 174, 22);
+		menuItem_2.setBounds(43, 145, 180, 22);
 		panel_1.add(menuItem_2);
 		menuItem_2.addActionListener(this);
 		
@@ -90,7 +90,6 @@ public class SecondBit extends JFrame implements ActionListener{
 		contentPane1.add(menuItem3);
 		menuItem3.addActionListener(this);
 			
-	
 	}
 	
 	
@@ -99,7 +98,7 @@ public class SecondBit extends JFrame implements ActionListener{
 			this.setVisible(false);
 			contentPane1.setVisible(false);
 			tb.ThirdBit_1();
-		}else if(e.getActionCommand().equals("[ 2. 계좌 출금 ]")) {
+		}else if(e.getActionCommand().equals("[ 2. 계좌 출금/송금 ]   ( 타은행 )")) {
 			this.setVisible(false);
 			contentPane1.setVisible(false);
 			tb.ThirdBit_2();

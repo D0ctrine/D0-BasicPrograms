@@ -7,6 +7,10 @@ import java.awt.Font;
 import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -19,18 +23,20 @@ import javax.swing.JTextPane;
 import javax.swing.border.EmptyBorder;
 
 import DAO.dao;
+import DAO.dto;
 
 public class ThirdBit extends JFrame implements ActionListener {
 	private JPanel contentPane2;
 	private JPanel contentPane3;
 	private JPanel contentPane4;
-	private JPanel contentPane5;
+	JTextArea textArea = new JTextArea();
+	JTextArea textArea_1 = new JTextArea();
 	String id1="";
-	
+	int countMoney=0;
 	ThirdBit(String id) {
 		this.id1 = id;
 	}
-	
+	JLabel label_2 = new JLabel("2. 계좌 금액 : [ "+countMoney+"원 ]");
 	public void ThirdBit_1() {
 		setResizable(false);
 		this.setVisible(true);
@@ -73,12 +79,12 @@ public class ThirdBit extends JFrame implements ActionListener {
 		contentPane2.add(panel_1);
 		panel_1.setLayout(null);
 
-		JLabel label_1 = new JLabel("1. 계좌 번호 : [ 103210585432 ]");
+		JLabel label_1 = new JLabel("1. 계좌 번호 : [ "+dao.getInstance().getAC(id1)+" ]");
 		label_1.setFont(new Font("굴림", Font.BOLD, 15));
-		label_1.setBounds(35, 23, 241, 42);
+		label_1.setBounds(35, 23, 270, 42);
 		panel_1.add(label_1);
 
-		JLabel label_2 = new JLabel("2. 계좌 금액 : [ "+dao.getInstance().getMoney(id1)+" ]");
+		
 		label_2.setFont(new Font("굴림", Font.BOLD, 15));
 		label_2.setBounds(35, 86, 296, 42);
 		panel_1.add(label_2);
@@ -94,9 +100,30 @@ public class ThirdBit extends JFrame implements ActionListener {
 		menuItem.setBounds(0, 365, 103, 22);
 		contentPane2.add(menuItem);
 		menuItem.addActionListener(this);
+		check();
 
 	}
+	dao d = dao.getInstance();
+	private void check() {
+		dto DTO = null;
+		System.out.println("check start~!!");
+		Runnable runnable = new Runnable() {
+			@Override
+			public void run() {
+				ArrayList<dto> dtobox = null;
+				label_2.setText("2. 계좌 금액 : [ "+d.getMoney(id1)+"원 ]");	
+				dtobox = d.checksendflag(id1, d.getAC(id1));
+					for(int i=0;i<dtobox.size();i++) {
+							d.setMoney(dtobox.get(i).getSender(), (d.getMoney(dtobox.get(i).getSender())-dtobox.get(i).getMoney())+"");
+							d.setMoneyAC(dtobox.get(i).getReceiver(), (d.getMoneyAC(dtobox.get(i).getReceiver())+dtobox.get(i).getMoney())+"");
+							d.ckeckflag();
+					}
+			}
 
+			};
+			ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
+			service.scheduleAtFixedRate(runnable, 0, 5, TimeUnit.SECONDS);
+	}
 	public void ThirdBit_2() {
 		setResizable(false);
 		this.setVisible(true);
@@ -213,7 +240,7 @@ public class ThirdBit extends JFrame implements ActionListener {
 		label.setBounds(513, 364, 39, 23);
 		contentPane4.add(label);
 
-		JLabel lblNewLabel = new JLabel("< ID_hiseok 님 입금 / 송금 >");
+		JLabel lblNewLabel = new JLabel("< ID_"+id1+" 님 입금 / 송금 >");
 		lblNewLabel.setFont(new Font("굴림", Font.BOLD, 12));
 		lblNewLabel.setBounds(143, 56, 203, 52);
 		contentPane4.add(lblNewLabel);
@@ -250,11 +277,11 @@ public class ThirdBit extends JFrame implements ActionListener {
 		label_4.setBounds(265, 117, 78, 42);
 		panel_1.add(label_4);
 
-		JTextArea textArea = new JTextArea();
+		
 		textArea.setBounds(35, 127, 214, 24);
 		panel_1.add(textArea);
-
-		JTextArea textArea_1 = new JTextArea();
+		
+		
 		textArea_1.setBounds(35, 62, 214, 24);
 		panel_1.add(textArea_1);
 		JMenuItem menuItem = new JMenuItem("뒤로가기");
@@ -266,12 +293,18 @@ public class ThirdBit extends JFrame implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("3. 계좌 내역 조회")) {
-			contentPane2.setVisible(false);
+			
+			this.setVisible(false);
+			new select(id1);
 		} else if (e.getActionCommand().equals("뒤로가기")) {
 			this.setVisible(false);
 			SecondBit frame = new SecondBit(id1);
 		} else if (e.getActionCommand().equals("보내기")) {
-			this.setVisible(false);
+			dao.getInstance().send(id1, textArea_1.getText(), textArea.getText());
+			System.out.println(id1+"/"+textArea.getText()+"/"+textArea_1.getText());
+			textArea.setText("");
+			textArea_1.setText("");
+			//this.setVisible(false);
 		} 
 	}
 

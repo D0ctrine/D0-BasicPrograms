@@ -7,6 +7,7 @@ import java.awt.SystemColor;
 import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Random;
 
 import javax.swing.Action;
 import javax.swing.ImageIcon;
@@ -25,6 +26,8 @@ public class Sign extends JFrame implements ActionListener {
 	TextField textField = new TextField();
 	TextField textField_1 = new TextField();
 	TextField textField_2 = new TextField();
+	Random r = new Random();
+	JLabel label_3 = new JLabel("나의 계좌번호 : ");
 	public Sign() {
 		this.setVisible(true);
 		setResizable(false);
@@ -99,6 +102,11 @@ public class Sign extends JFrame implements ActionListener {
 		textField_2.setForeground(Color.BLACK);
 		textField_2.setBounds(56, 262, 100, 23);
 		contentPane.add(textField_2);
+		
+		
+		label_3.setFont(new Font("Dialog", Font.BOLD, 23));
+		label_3.setBounds(107, 24, 372, 33);
+		contentPane.add(label_3);
 		JLabel lblNewLabel = new JLabel(bitcoin);
 		lblNewLabel.setBounds(0, 0, 562, 397);
 		
@@ -112,9 +120,15 @@ public class Sign extends JFrame implements ActionListener {
 			this.setVisible(false);
 			new FirstBit();
 		}else if(e.getActionCommand().equals("회원가입")) {
+			String account = "";
+			for(int i=0 ;i<14;i++) {
+				int accountnum = r.nextInt(9)+1;
+				account += accountnum+"";
+			}
+			if(!dao.getInstance().checkAC(account))label_3.setText("나의 계좌번호 : "+account);
 			System.out.println("회원가입 시작~! ");
 			System.out.println(textField_1.getText()+"/"+textField.getText()+"/"+textField_2.getText());
-			dao.getInstance().insert(textField_1.getText(), textField.getText(),textField_2.getText());
+			dao.getInstance().insert(textField_1.getText(), textField.getText(),textField_2.getText(),account);
 			System.out.println("회원가입 끝~! ");
 		}
 		

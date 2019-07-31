@@ -127,9 +127,10 @@ public class FirstBit extends JFrame implements ActionListener {
 				new SecondBit(textField.getText());
 			}else if(temp==2) { //ID만  맞을경우
 				lblPassword.setForeground(Color.RED);
-				
+				lblId.setForeground(Color.GREEN);
 			}else if(temp==1) { //PW만 맞을경우
 				lblId.setForeground(Color.RED);
+				lblPassword.setForeground(Color.GREEN);
 		
 			}else if(temp==0){
 				lblId.setForeground(Color.RED);
