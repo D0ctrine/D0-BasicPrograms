@@ -16,11 +16,14 @@ import javax.swing.JPanel;
 import javax.swing.JTextPane;
 import javax.swing.border.EmptyBorder;
 
+import C.CMain;
+
 public class SecondBit extends JFrame implements ActionListener{
 	private JPanel contentPane1;
 	
 	ThirdBit tb=null;
 	public SecondBit(String id) {
+		
 		tb = new ThirdBit(id);
 		setResizable(false);
 		this.setVisible(true);

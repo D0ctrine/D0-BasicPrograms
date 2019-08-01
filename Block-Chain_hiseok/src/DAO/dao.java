@@ -181,7 +181,6 @@ public void ckeckflag() {
 	public ArrayList<dto> checksend() {
 		Connection conn = getConnection();
 		PreparedStatement ppst = null;
-		dto DTO = new dto();
 		ResultSet rs = null;
 		ArrayList<dto> dtobox = new ArrayList<dto>();
 		try {
@@ -190,6 +189,7 @@ public void ckeckflag() {
 			if(rs.next()) {
 				
 			do {
+				dto DTO = new dto();
 				DTO.setSender(rs.getString("SENDER"));
 				DTO.setReceiver(rs.getString("RECEIVER"));
 				DTO.setMoney(rs.getInt("MONEY"));
@@ -223,7 +223,7 @@ public void ckeckflag() {
 			
 			ppst = conn.prepareStatement("select * from send where sender =? or receiver =? order by datetime desc");
 			ppst.setString(1,id);
-			ppst.setInt(2,Integer.parseInt(ac));
+			ppst.setString(2,ac);
 			rs = ppst.executeQuery();
 			if(rs.next()) {
 				
