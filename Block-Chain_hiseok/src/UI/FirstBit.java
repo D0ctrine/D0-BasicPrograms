@@ -8,7 +8,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
+import C.CMain;
 import DAO.dao;
+import S.SMain;
 
 import java.awt.TextArea;
 import javax.swing.JButton;
@@ -124,6 +126,7 @@ public class FirstBit extends JFrame implements ActionListener {
 			System.out.println("check / "+temp);
 			if(temp==3) { //다맞을경우 넘어가기
 				this.setVisible(false);
+				
 				new SecondBit(textField.getText());
 			}else if(temp==2) { //ID만  맞을경우
 				lblPassword.setForeground(Color.RED);

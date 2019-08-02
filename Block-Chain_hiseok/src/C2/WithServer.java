@@ -1,4 +1,4 @@
-package C;
+package C2;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -21,35 +21,33 @@ public class WithServer {
 	Scanner in = new Scanner(System.in);
 	FileInputStream fi = null; // Byte방식으로 jvm에서 외부로 input하는 객체변수
 	FileOutputStream fo = null;
+	String targetFile = "hash.txt";
 	ArrayList<String> idbox = new ArrayList<String>();
 	int i=0;
 	ArrayList<dto> dtobox = null;
 	dao d = dao.getInstance();
 	ArrayList<String> hashbox = new ArrayList<String>();
+
 	public WithServer(Socket s) {
-		
 		this.myClient = s;
-		
 		receiveData();
-		hashbox = new Nooby().blockmain(hashbox);
-		if(read(hashbox)) {
-			setHash();
+		if(read(0)==null) {
+			System.out.println("초기값 설정");
+			setF();
 		}
-		
-		
+		setHash();
+		sendData();
 	}
-private void setHash() {
-	System.out.println("해시파일 세팅");
-		
+	
+	private void setHash() {
+	
+		hashbox = new Nooby().blockmain(hashbox);
 		System.out.println("hashbox size : "+hashbox.size());
 		for(int i=0;i<hashbox.size();i++) {
-			if(i==0) {
-				insert(hashbox.get(0),"First Block");
-			}else {
-				insert(hashbox.get(i),"이전 해시값 정보 : "+hashbox.get(i-1)+"\r\n지금 블록 순서 : "+(i+1)+"번째");
-			}
+			//insert(hashbox.get(i)+"\r\n");
+			makeF(hashbox.get(i));
 		}
-}
+	}
 	
 	
 	private void receiveData() {
@@ -61,7 +59,7 @@ private void setHash() {
 					while (true) {
 						byte[] reBuf = new byte[256];
 						reMsg.read(reBuf);
-						String msg = new String(reBuf).trim();
+						String msg = new String(reBuf).trim();    
 						System.out.println(id + " / " + msg);
 					}
 				} catch (IOException e) {
@@ -72,13 +70,21 @@ private void setHash() {
 		}).start();
 	}
 
-	private void sendData(String msg) {
+	private void sendData() {
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
 				try {
+					while(true) {
+						String re = in.nextLine();
 						sendMsg = myClient.getOutputStream();
-						sendMsg.write(msg.getBytes());
+						sendMsg.write(re.getBytes());
+					}
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
+			}
+		}).start();
 	}
 
 	String read(int i) {
@@ -89,7 +95,7 @@ private void setHash() {
 
 		try {
 
-			//fi = new FileInputStream(targetFile);
+			fi = new FileInputStream(targetFile);
 
 			if (fi != null) {
 				while ((k = fi.read(readM)) != -1) {
@@ -113,44 +119,13 @@ private void setHash() {
 		}
 		return imsi1;
 	}
-	Boolean read(ArrayList<String> hashbox) {
-		int k = 0;
-		boolean flag = true;
-		byte[] readM = new byte[16];
-		String fname=null;
-
-		try {
-			for(int i=0;i<hashbox.size();i++) {
-				fname=hashbox.get(i)+".txt";
-				
-			fi = new FileInputStream(fname);
-
-			
-			}
-
-		} catch (Exception e) {
-		//	e.printStackTrace();
-			
-			System.out.println(fname+"존재하지 않습니다. 위조 의심");
-			sendData("Error From ("+(i+1)+") Block : [Hash data : "+hashbox.get(i)+" ]");
-			// TODO: handle exception
-		} finally {
-			try {
-				if (fi != null)
-					fi.close();
-			} catch (IOException e) {
-				// TODO: handle exception
-				e.printStackTrace();
-			}
-		}
-		return flag;
-	}
+	
 	public void setF() {
 		if (fo == null) {
 
 			// 파일 저장
 			try {
-				//fo = new FileOutputStream(targetFile);
+				fo = new FileOutputStream(targetFile);
 
 			} catch (Exception e) {
 
@@ -164,12 +139,12 @@ private void setHash() {
 			}
 		}
 	}
-
 	public void makeF(String filename) {
+		if (fo == null) {
 
 			// 파일 저장
 			try {
-				fo = new FileOutputStream("C:/Users/Hu-203-07/eclipse-workspace/Block-Chain_hiseok/Block/"+filename+".txt");
+				fo = new FileOutputStream(filename);
 
 			} catch (Exception e) {
 
@@ -181,13 +156,15 @@ private void setHash() {
 					e.printStackTrace();
 				}
 			}
+		}
 	}
-	void insert(String target,String msg) {
+	void insert(String msg,String target) {
+
 		try {
 			
-			fo = new FileOutputStream("C:/Users/Hu-203-07/eclipse-workspace/Block-Chain_hiseok/Block/"+target+".txt");
+			fo = new FileOutputStream(target);
 
-			fo.write((msg).getBytes());
+			fo.write(msg.getBytes());
 			fo.flush();
 
 		} catch (Exception e) {

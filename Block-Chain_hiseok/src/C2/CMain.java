@@ -1,4 +1,4 @@
-package C;
+package C2;
 
 public class CMain {
 	public  CMain(){

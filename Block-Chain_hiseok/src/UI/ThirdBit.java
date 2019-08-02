@@ -2,7 +2,6 @@ package UI;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Label;
 import java.awt.event.ActionEvent;
@@ -22,8 +21,11 @@ import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 import javax.swing.border.EmptyBorder;
 
+import Blockchain.Nooby;
+import C.CMain;
 import DAO.dao;
 import DAO.dto;
+import S.SMain;
 
 public class ThirdBit extends JFrame implements ActionListener {
 	private JPanel contentPane2;
@@ -293,13 +295,25 @@ public class ThirdBit extends JFrame implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("3. 계좌 내역 조회")) {
-			
 			this.setVisible(false);
 			new select(id1);
 		} else if (e.getActionCommand().equals("뒤로가기")) {
 			this.setVisible(false);
 			SecondBit frame = new SecondBit(id1);
 		} else if (e.getActionCommand().equals("보내기")) {
+			new Thread(new Runnable() {
+				public void run() {
+					System.out.println("Server 시작");
+					new SMain();
+				}
+			}).start();
+			
+			new Thread(new Runnable() {
+					public void run() {
+						System.out.println("Client 시작");
+						new CMain();
+					}
+				}).start();
 			dao.getInstance().send(id1, textArea_1.getText(), textArea.getText());
 			System.out.println(id1+"/"+textArea.getText()+"/"+textArea_1.getText());
 			textArea.setText("");

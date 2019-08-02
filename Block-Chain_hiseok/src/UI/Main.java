@@ -3,27 +3,16 @@ package UI;
 import java.awt.EventQueue;
 
 import C.CMain;
+import S.SMain;
 
 
 public class Main {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		//new ServerCenter();
-		//new CStart();
-		new Runnable() {
-			public void run() {
-				
-				new Main();
-			}
-		};
-		new Runnable() {
-			public void run() {
-				new CMain();
-				
-			}
-		};
-		EventQueue.invokeLater(new Runnable() {
+		
 			
+		
+		Thread t3 = new Thread(new Runnable() {
 			public void run() {
 				try {
 					FirstBit frame = new FirstBit();
@@ -33,6 +22,13 @@ public class Main {
 				}
 			}
 		});
+		
+		
+//		t1.start();
+//		t2.start();
+		t3.start();
 	}
+
+	
 
 }

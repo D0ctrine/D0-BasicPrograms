@@ -16,7 +16,7 @@ public class WithClient extends Thread { // 접속 한 클라이언트랑 통신
  	@Override
 	public void run() {
 
-		sendData();
+		//sendData();
 		receiveData();
 	}
 
@@ -39,6 +39,9 @@ public class WithClient extends Thread { // 접속 한 클라이언트랑 통신
 						byte[] reBuf = new byte[256];
 						reMsg.read(reBuf);
 						String msg = new String(reBuf).trim();
+						if(msg.indexOf("Error From (")!=-1) {
+							System.out.println("Error로 시작한다는디");//클라이언트 2에게 확인하기
+						}
 						System.out.println(myClient.getInetAddress() + " / " + msg);
 					}
 				} catch (IOException e) {
@@ -49,23 +52,23 @@ public class WithClient extends Thread { // 접속 한 클라이언트랑 통신
 		}).start();
 	}
 	
-	private void sendData() {
-		new Thread(new Runnable() {
-		@Override
-		public void run() {
-			try {
-				while(true) {
-					String msg= in.nextLine();
-					
-					myClient.getOutputStream().write(msg.getBytes());
-				}
-				
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		}).start();
-	}
+//	private void sendData() {
+//		new Thread(new Runnable() {
+//		@Override
+//		public void run() {
+//			try {
+//				while(true) {
+//					String msg= in.nextLine();
+//					
+//					myClient.getOutputStream().write(msg.getBytes());
+//				}
+//				
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//		}
+//		}).start();
+//	}
 	public void sendData(String msg) {
 			try {
 				myClient.getOutputStream().write(msg.getBytes());

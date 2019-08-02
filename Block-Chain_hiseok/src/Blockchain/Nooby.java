@@ -26,11 +26,12 @@ public class Nooby {
 				//c=dtobox.size()-1;
 			}
 
-			
-			for(int i=0;i<linebox.size();i++) {
+			blockchain.add(new Block("Hi im the first block", "0"));
+			System.out.println("Trying to Mine block 1... ");
+			mybox.add(blockchain.get(0).mineBlock(difficulty));
+			for(int i=1;i<linebox.size();i++) {
 				System.out.println(linebox.get(i)+"|"+i);
-				
-				blockchain.add(new Block(linebox.get(i), "0"));
+				blockchain.add(new Block(linebox.get(i), blockchain.get(blockchain.size()-1).hash));
 				System.out.println("Trying to Mine block "+(i+1)+"... ");
 				mybox.add(blockchain.get(i).mineBlock(difficulty));
 				  
@@ -69,6 +70,9 @@ public class Nooby {
 			//compare previous hash and registered previous hash
 			if(!previousBlock.hash.equals(currentBlock.previousHash) ) {
 				System.out.println("Previous Hashes not equal");
+				System.out.println("---------------------------------------");
+				System.out.println("[previousBlock.hash] \n"+previousBlock.hash);
+				System.out.println("[currentBlock.previousHash] \n"+currentBlock.previousHash);
 				return false;
 			}
 			//check if hash is solved

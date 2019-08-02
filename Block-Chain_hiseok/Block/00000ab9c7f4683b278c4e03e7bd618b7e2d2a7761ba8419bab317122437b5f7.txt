@@ -1,0 +1,2 @@
+이전 해시값 정보 : 000001afe75e7bfcba14bd505be37834587f20df9b4bc5ca0ca791e7ffc5fb3c
+지금 블록 순서 : 14번째
