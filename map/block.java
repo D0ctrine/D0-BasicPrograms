@@ -28,8 +28,8 @@ abstract public class block {
 	}
 	public boolean Rightstop() {
 		boolean flag = false;
-		if(ball.getBall_x() < (getX() + getWidth() + 2)
-				&& ball.getBall_x() > (getX() + getWidth() - 2)
+		if((  ball.getBall_x()+8) < (getX() + getWidth() + 2)
+				&& ball.getBall_x()+8 > (getX() + getWidth() - 2)
 				&& ball.getBall_y() > getY()-3) {
 			flag=true;
 		}
